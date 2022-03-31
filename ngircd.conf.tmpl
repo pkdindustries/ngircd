@@ -1,0 +1,32 @@
+# https://raw.githubusercontent.com/ngircd/ngircd/master/doc/sample-ngircd.conf.tmpl
+
+[Global]
+	Name = ${IRCD_NAME}
+	Info = ${IRCD_INFO}
+	Listen = 0.0.0.0
+	MotdPhrase = ${IRCD_MOTD}
+	Network = ${IRCD_NETWORK}
+	Ports = ${IRCD_PORTS}
+	ServerGID = nobody
+	ServerUID = nobody
+
+[Limits]
+	MaxListSize = 100
+	PingTimeout = 120
+
+[Options]
+	ChrootDir = /var/empty
+	DNS = yes
+	PAM = no
+
+[SSL]
+	CertFile = ${IRCD_SSL_CERT_FILE}
+	KeyFile = ${IRCD_SSL_KEY_FILE}
+	KeyFilePassword = ${IRCD_SSL_KEYFILE_PASSWORD}
+	Ports = ${IRCD_SSL_PORTS}
+
+[Channel]
+	Name = ${IRCD_CHANNEL_NAME}
+	Topic = ${IRCD_CHANNEL_TOPIC}
+	Modes = ${IRCD_CHANNEL_MODES}
+	Key = ${IRCD_CHANNEL_KEY}
