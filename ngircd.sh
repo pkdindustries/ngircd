@@ -53,11 +53,7 @@ export IRCD_SSL_CONFIG
 echo "Writing ngircd.conf"
 envsubst < /ngircd.conf.tmpl > /ngircd.conf
 
-cat /ngircd.conf
+# test config
 /usr/sbin/ngircd -f /ngircd.conf -t
-ls -lsd /ngircd* /certs
-ls -ls /certs/*
-ls -lsd /ngircd/
-ls -ls /ngircd/*
 # Start ngIRCd with debug logging
 exec /usr/sbin/ngircd -f /ngircd.conf -n -d
