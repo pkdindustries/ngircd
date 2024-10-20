@@ -1,3 +1,4 @@
 #!/bin/bash -x
-docker build . -t gcr.io/linksnaps/ngircd:dev 
-docker push gcr.io/linksnaps/ngircd:dev
+TAG=${TAG:-dev}
+
+docker build --platform linux/amd64 --push -t gcr.io/linksnaps/ngircd:"$TAG" .

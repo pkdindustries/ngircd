@@ -1,0 +1,56 @@
+services:
+  spoke-irc:
+    build: .
+    container_name: spoke-irc
+    environment:
+      - IRCD_NAME=spoke.pkd.org
+      - IRCD_INFO=spoke
+      - IRCD_NETWORK=pkd.org
+      - IRCD_MOTD=Welcome spoke server
+      - IRCD_PORTS=6668
+      - IRCD_SSL_PORTS=7668
+      - IRCD_SSL_CERT_FILE=/certs/irc-cert.pem
+      - IRCD_SSL_KEY_FILE=/certs/irc-key.pem
+      - IRCD_LINK_SSL_VERIFY=no
+      - IRCD_SSL_KEYFILE_PASSWORD=hihi
+      - IRCD_LINK_NAME=spoke.pkd.org
+      - IRCD_LINK_PASSWORD=secret2
+      - IRCD_LINK_PEER_PASSWORD=secret1
+      - IRCD_LINK_NAME=hub.pkd.org
+      - IRCD_LINK_HOST=hub-irc
+      - IRCD_LINK_PORT=7669
+      - IRCD_LINK_PASSWORD=secret1
+      - IRCD_LINK_PEER_PASSWORD=secret2
+    networks:
+      - PKDNET_IRC_BACKBONE
+    depends_on:
+      - hub-irc
+    ports:
+      - 6668:6668
+      - 7668:7668
+
+  hub-irc:
+    build: .
+    container_name: hub-irc
+    environment:
+      - IRCD_NAME=hub.pkd.org
+      - IRCD_INFO=hub irc server
+      - IRCD_NETWORK=pkd.org
+      - IRCD_MOTD=Welcome to hub server
+      - IRCD_PORTS=6669
+      - IRCD_SSL_PORTS=7669
+      - IRCD_SSL_CERT_FILE=/certs/irc-cert.pem
+      - IRCD_SSL_KEY_FILE=/certs/irc-key.pem
+      - IRCD_SSL_KEYFILE_PASSWORD=hihi
+      - IRCD_LINK_SSL_VERIFY=no
+      - IRCD_LINK_NAME=spoke.pkd.org
+      - IRCD_LINK_PASSWORD=secret2
+      - IRCD_LINK_PEER_PASSWORD=secret1
+    networks:
+      - PKDNET_IRC_BACKBONE
+    ports:
+      - 6669:6669
+      - 7669:7669
+
+networks:
+  PKDNET_IRC_BACKBONE:
