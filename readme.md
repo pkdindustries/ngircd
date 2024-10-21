@@ -34,26 +34,32 @@ docker compose up --build
 
 ## env
 
+### [global] 
+| Setting                 | hub-irc Value       | spoke-irc Value     | Explanation / Relationship                                                                                                      |
+|-------------------------|---------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| IRCD_NAME               | hub-irc             | spoke-irc           | The unique name of each IRC server. These names are used to identify the servers within the network and are referenced in the [Server] section for linking.          |
+| IRCD_NETWORK            | pkdnet              | pkdnet              | The network name both servers belong to. Must be the same for all servers in the network to ensure they are recognized as part of the same IRC network.              |
+| IRCD_MOTD               | an example irc network, hub | an example irc network, spoke | The Message of the Day displayed to users upon connection. While not critical for inter-server communication, it provides context to users about each server.         |
+| IRCD_PORTS              | 6669                | 6668                | Non-SSL listener ports for client connections. Different ports prevent conflicts and allow clients to choose which server to connect to based on the port number.     |
 
-- general:
-  - `IRCD_NAME` `IRCD_NETWORK` `IRCD_MOTD`
-    
-- ports/ssl:
-   - `IRCD_PORTS` `IRCD_SSL_PORTS` `IRCD_SSL_CERT_FILE` `IRCD_SSL_KEY_FILE` `IRCD_SSL_KEYFILE_PASSWORD`
-    
-- linking:
-   - `IRCD_LINK_NAME` `IRCD_LINK_HOST` `IRCD_LINK_PORT` `IRCD_LINK_PASSWORD` `IRCD_LINK_PEER_PASSWORD` 
-  
+### [ssl] 
+| Setting                 | hub-irc Value       | spoke-irc Value     | Explanation / Relationship                                                                                                      |
+|-------------------------|---------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| IRCD_SSL_PORTS          | 7669                | 6669                | SSL listener ports for client connections. Each server listens on different SSL ports to distinguish between them and avoid port conflicts.                         |
+| IRCD_SSL_CERT_FILE      | /certs/irc-cert.pem | /certs/irc-cert.pem | Path to the SSL certificate file. Both servers can use the same certificate for simplicity in this example, but in practice, they may have individual certificates.   |
+| IRCD_SSL_KEY_FILE       | /certs/irc-key.pem  | /certs/irc-key.pem  | Path to the SSL key file corresponding to the SSL certificate. As above, both servers are using the same key file in this example.                                    |
+| IRCD_SSL_KEYFILE_PASSWORD | secret             | secret              | Password for the SSL key file if it is encrypted. Both servers use the same password to decrypt their SSL key files.                                                   |
 
-### server link settings
+
+### [server] 
 | Setting        | hub-irc Value      | spoke-irc Value    | Explanation / Relationship |
 |----------------|--------------------|--------------------|----------------------------|
-| **Name**       | spoke-irc          | hub-irc            | The name of the server to link with. Each server specifies the other's name to establish the link. |
-| **Host**       | *(Not specified)*  | hub-irc.local      | `hub-irc` accepts connections and doesn't specify `Host`. `spoke-irc` specifies `Host` to connect to `hub-irc`. |
-| **Port**       | 7669               | 7669               | Both servers use the same port number for the server link. This port must be open on `hub-irc` for `spoke-irc` to connect. |
-| **MyPassword** | peerpassword       | linkpassword       | Passwords used for authentication. `hub-irc`'s `MyPassword` matches `spoke-irc`'s `PeerPassword`, and vice versa, to authenticate the link. |
-| **PeerPassword** | linkpassword     | peerpassword       | See above. Passwords are exchanged to authenticate the servers to each other. |
-| **SSLConnect** | *(Not specified)*  | yes                | `spoke-irc` sets `SSLConnect = yes` to use SSL when connecting to `hub-irc`. `hub-irc` doesn’t need this setting as it accepts SSL connections. |
+| IRCD_LINK_NAME      | spoke-irc          | hub-irc            | The name of the server to link with. Each server specifies the other's name to establish the link. |
+| IRCD_LINK_HOST     | *(Not specified)*  | hub-irc.local      | `hub-irc` accepts connections and doesn't specify `Host`. `spoke-irc` specifies `Host` to connect to `hub-irc`. |
+| IRCD_LINK_PORT      | 7669               | 7669               | Both servers use the same port number for the server link. This port must be open on `hub-irc` for `spoke-irc` to connect. |
+| IRCD_LINK_PASSWORD| peerpassword       | linkpassword       | Passwords used for authentication. `hub-irc`'s `MyPassword` matches `spoke-irc`'s `PeerPassword`, and vice versa, to authenticate the link. |
+| IRCD_LINK_PEER_PASSWORD| linkpassword     | peerpassword       | See above. Passwords are exchanged to authenticate the servers to each other. |
+
 
  
 ## configuration
