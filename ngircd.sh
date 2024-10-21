@@ -19,10 +19,6 @@ Ports = ${IRCD_PORTS}
 ServerGID = nobody
 ServerUID = nobody
 
-[Limits]
-MaxListSize = 100
-PingTimeout = 120
-
 [Options]
 DNS = yes
 PAM = no

@@ -1,21 +1,17 @@
-# readme for ngircd hub and spoke prefab
+# ngircd hub and spoke prefab
 
 ## overview
 
-this setup creates an irc network using **ngircd** within docker containers. it employs a hub-and-spoke topology and supports ssl-secured connections to ensure security.
+an irc network using **ngircd** within containers. 
+
+hub-and-spoke, ssl encrypted, etc
 
 ## project structure
 
 - **ngircd.sh**: docker entrypoint for configuring and starting **ngircd**.
-- **Dockerfile**: defines the docker image for **ngircd**.
-- **certs/**: directory containing ssl certificate.
+- **Dockerfile**: defines a docker image for ngircd configurable with environment
 - **certs/generate.sh**: script to generate ssl certificate.
-- **compose.yml**: docker compose file with example hub and spoke configuration.
-
-## prerequisites
-
-- **docker** and **docker compose** installed.
-- **openssl** to generate ssl certificates.
+- **compose.yml**: docker compose file with example link
 
 ## setup instructions
 
@@ -30,41 +26,14 @@ this setup creates an irc network using **ngircd** within docker containers. it 
 
 **build and run example containers**
 
-use **docker-compose up** to start the example with these configurations. 
-
 ```bash
 # fire up both hub and spoke servers using compose
-docker-compose up --build
+docker compose up --build
 ```
 
-## example configuration and topology
-
-this docker compose example creates a hub-and-spoke irc network topology with two irc servers:
-
-- **hub-irc**: the central server that other servers (spokes) connect to.
-- **spoke-irc**: a server that connects to the hub, extending the network.
-
-## configuration details
-
-- **hub-irc** and **spoke-irc** are defined as separate services in **compose.yml**.
-- each service is built from the current directory (`build: .`) using the **Dockerfile** to create the ngircd container.
-- both servers use ssl for secure communication, with ssl certificates specified in the environment variables.
-- the **hub-irc** service listens on ports **6669** (regular) and **7669** (ssl).
-- the **spoke-irc** service listens on ports **6668** (regular) and **7668** (ssl).
-
-## environment variables and linking
-
-the environment variables defined for each service are used to configure ngircd, such as the server name, network, motd, and ssl settings.
-
-- **hub-irc** and **spoke-irc** are linked together using **IRCD\_LINK** variables, specifying the link name, host, port, and passwords for secure connection.
-- **depends\_on** is used to ensure that **spoke-irc** waits for **hub-irc** to be ready before starting.
-- both services are part of the same docker network (`PKDNET_IRC_BACKBONE`) to facilitate communication between them.
-
-this configuration allows **hub-irc** to act as the main node, while **spoke-irc** extends the network by linking to the hub. clients can connect to either server and communicate across the entire network.
 
 ## environment variables
 
-defined in **compose.yml**:
 
 - general configuration:
   - `IRCD_NAME` 
@@ -86,12 +55,9 @@ defined in **compose.yml**:
     - `IRCD_LINK_PEER_PASSWORD` 
   
     
+## configuration
 
-these environment variables are used to create the **ngircd.conf** file.
-
-## example configuration for ngircd
-
-below is an example configuration for **spoke-irc**, demonstrating how to set up the irc server using the ngircd configuration file:
+configuration for **spoke-irc**, actively connects to the hub
 
 ```ini
     [Global]
@@ -101,10 +67,6 @@ below is an example configuration for **spoke-irc**, demonstrating how to set up
     MotdPhrase = an example irc network, spoke
     # Specify the network name this server belongs to
     Network = pkdnet
-    # Set the maximum number of simultaneous connection attempts
-    MaxConnections = 500
-    # Define the maximum number of channels a user can join
-    MaxJoins = 30
     # non-ssl listener ports
     Ports = 6668
     # server permissions
@@ -132,9 +94,15 @@ below is an example configuration for **spoke-irc**, demonstrating how to set up
     PeerPassword = peerpassword
     # use SSL for the server link
     SSLConnect = yes
+    # cert validation
+    SSLVerify = no
+    [Options]
+    # for container dns
+    DNS = yes
+    PAM = no
 ```
 
-below is an example configuration for **hub-irc**, demonstrating how to set up the irc server using the ngircd configuration file:
+paired configuration for **hub-irc**, passively waits for connections
 ```ini
     [Global]
     # Set the name of the IRC server
@@ -143,10 +111,6 @@ below is an example configuration for **hub-irc**, demonstrating how to set up t
     MotdPhrase = an example irc network, hub
     # Specify the network name this server belongs to
     Network = pkdnet
-    # Set the maximum number of simultaneous connection attempts  
-    MaxConnections = 1000
-    # Define the maximum number of channels a user can join
-    MaxJoins = 50
     # non-ssl listener ports
     Ports = 6669
     # server permissions
@@ -154,9 +118,9 @@ below is an example configuration for **hub-irc**, demonstrating how to set up t
     ServerUID = nobody
     [SSL]
     # path to the cert
-    CertFile = /certs/hub-cert.pem
+    CertFile = /certs/irc-cert.pem
     # path to the key
-    KeyFile = /certs/hub-key.pem  
+    KeyFile = /certs/irc-key.pem  
     # password for the key
     KeyFilePassword = secret
     # ssl listener ports
@@ -166,36 +130,16 @@ below is an example configuration for **hub-irc**, demonstrating how to set up t
     Name = spoke-irc 
     # set the port to accept the link on
     Port = 7669
-    # set link password expected from spoke
+    # link password expected from spoke
     MyPassword = peerpassword
-    # set link password to send to spoke  
+    # link password to send to spoke  
     PeerPassword = linkpassword
+    [Options]
+    # for container dns
+    DNS = yes
+    PAM = no
 ```
-   these configuration files illustrate how **spoke-irc** is linked to **hub-irc**, specifying ssl settings, server name, ports, and passwords for secure connections.
 
-## ssl and server link configuration
 
-the **ngircd.sh** script dynamically builds the ssl and server link configuration by substituting the values from environment variables into the **ngircd.conf.tmpl** template.
 
-## troubleshooting
-
-- **test configuration**: run ngircd with the `-t` flag to test the configuration before launching.
-- **logs**: to view logs for troubleshooting, you can use `docker logs <container_name>`.
-
-## notes
-
-- make sure that **ngircd** is correctly installed in the **alpine** image as specified in the **Dockerfile**.
-- adjust the environment variables in **compose.yml** to match your specific requirements (e.g., port numbers, server names).
-
-## license
-
-this project is open-source and freely modifiable. contributions are welcome.
-
-## contact and support
-
-if you encounter issues or have questions, please open an issue in the repository for further assistance.
-
----
-
-enjoy building and running your secure irc network with ngircd!
 
