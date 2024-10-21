@@ -1,19 +1,19 @@
 # ngircd hub and spoke prefab
 
-## overview
+## what
 
 an irc network using **ngircd** within containers. 
 
 hub-and-spoke, ssl encrypted, etc
 
-## project structure
+## files
 
-- **ngircd.sh**: docker entrypoint for configuring and starting **ngircd**.
-- **Dockerfile**: defines a docker image for ngircd configurable with environment
-- **certs/generate.sh**: script to generate ssl certificate.
-- **compose.yml**: docker compose file with example link
+ - *[ngircd.sh](ngircd.sh)*: docker entrypoint for configuring and starting **ngircd**.
+ - *[Dockerfile](Dockerfile)*: defines a docker image for ngircd configurable with environment
+ - *[certs/generate.sh](certs/generate.sh)*: script to generate ssl certificate.
+ - *[compose.yml](compose.yml)*: docker compose file with example link
 
-## setup instructions
+## setup
 
 **generate ssl certificates**
 
@@ -32,27 +32,17 @@ docker compose up --build
 ```
 
 
-## environment variables
+## env
 
 
-- general configuration:
-  - `IRCD_NAME` 
-  - `IRCD_NETWORK`
-  - `IRCD_MOTD`
+- general:
+  - `IRCD_NAME` `IRCD_NETWORK` `IRCD_MOTD`
     
-- ports and ssl:
-    - `IRCD_PORTS` 
-    - `IRCD_SSL_PORTS` 
-    - `IRCD_SSL_CERT_FILE` 
-    - `IRCD_SSL_KEY_FILE`
-    - `IRCD_SSL_KEYFILE_PASSWORD`
+- ports/ssl:
+   - `IRCD_PORTS` `IRCD_SSL_PORTS` `IRCD_SSL_CERT_FILE` `IRCD_SSL_KEY_FILE` `IRCD_SSL_KEYFILE_PASSWORD`
     
-- linking servers:
-    - `IRCD_LINK_NAME` 
-    - `IRCD_LINK_HOST` 
-    - `IRCD_LINK_PORT`
-    - `IRCD_LINK_PASSWORD` 
-    - `IRCD_LINK_PEER_PASSWORD` 
+- linking:
+   - `IRCD_LINK_NAME` `IRCD_LINK_HOST` `IRCD_LINK_PORT` `IRCD_LINK_PASSWORD` `IRCD_LINK_PEER_PASSWORD` 
   
     
 ## configuration
