@@ -44,7 +44,18 @@ docker compose up --build
 - linking:
    - `IRCD_LINK_NAME` `IRCD_LINK_HOST` `IRCD_LINK_PORT` `IRCD_LINK_PASSWORD` `IRCD_LINK_PEER_PASSWORD` 
   
-    
+
+### server link settings
+| Setting        | hub-irc Value      | spoke-irc Value    | Explanation / Relationship |
+|----------------|--------------------|--------------------|----------------------------|
+| **Name**       | spoke-irc          | hub-irc            | The name of the server to link with. Each server specifies the other's name to establish the link. |
+| **Host**       | *(Not specified)*  | hub-irc.local      | `hub-irc` accepts connections and doesn't specify `Host`. `spoke-irc` specifies `Host` to connect to `hub-irc`. |
+| **Port**       | 7669               | 7669               | Both servers use the same port number for the server link. This port must be open on `hub-irc` for `spoke-irc` to connect. |
+| **MyPassword** | peerpassword       | linkpassword       | Passwords used for authentication. `hub-irc`'s `MyPassword` matches `spoke-irc`'s `PeerPassword`, and vice versa, to authenticate the link. |
+| **PeerPassword** | linkpassword     | peerpassword       | See above. Passwords are exchanged to authenticate the servers to each other. |
+| **SSLConnect** | *(Not specified)*  | yes                | `spoke-irc` sets `SSLConnect = yes` to use SSL when connecting to `hub-irc`. `hub-irc` doesn’t need this setting as it accepts SSL connections. |
+
+ 
 ## configuration
 
 configuration for **spoke-irc**, actively connects to the hub
