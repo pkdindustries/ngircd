@@ -6,12 +6,11 @@ this setup creates an irc network using **ngircd** within docker containers. it 
 
 ## project structure
 
-- **build.sh**: builds and pushes the docker image.
 - **ngircd.sh**: docker entrypoint for configuring and starting **ngircd**.
 - **ngircd.conf.tmpl**: configuration template for **ngircd**.
-- **dockerfile**: defines the docker image for **ngircd**.
-- **certs/**: directory containing ssl certificates.
-- **certs/generate.sh**: script to generate ssl certificates.
+- **Dockerfile**: defines the docker image for **ngircd**.
+- **certs/**: directory containing ssl certificate.
+- **certs/generate.sh**: script to generate ssl certificate.
 - **compose.yml**: docker compose file with example hub and spoke configuration.
 
 ## prerequisites
@@ -48,8 +47,8 @@ this docker compose example creates a hub-and-spoke irc network topology with tw
 
 ## configuration details
 
-- **hub-irc** and **spoke-irc** are defined as separate services in **docker-compose.yml**.
-- each service is built from the current directory (`build: .`) using the **dockerfile** to create the ngircd container.
+- **hub-irc** and **spoke-irc** are defined as separate services in **compose.yml**.
+- each service is built from the current directory (`build: .`) using the **Dockerfile** to create the ngircd container.
 - both servers use ssl for secure communication, with ssl certificates specified in the environment variables.
 - the **hub-irc** service listens on ports **6669** (regular) and **7669** (ssl).
 - the **spoke-irc** service listens on ports **6668** (regular) and **7668** (ssl).
@@ -186,7 +185,7 @@ the **ngircd.sh** script dynamically builds the ssl and server link configuratio
 
 ## notes
 
-- make sure that **ngircd** is correctly installed in the **alpine** image as specified in the **dockerfile**.
+- make sure that **ngircd** is correctly installed in the **alpine** image as specified in the **Dockerfile**.
 - adjust the environment variables in **compose.yml** to match your specific requirements (e.g., port numbers, server names).
 
 ## license
