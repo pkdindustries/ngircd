@@ -1,4 +1,4 @@
-# readme for ngircd docker setup
+# readme for ngircd hub and spoke prefab
 
 ## overview
 
@@ -21,7 +21,7 @@ this setup creates an irc network using **ngircd** within docker containers. it 
 
 ## setup instructions
 
-1. **generate ssl certificates**
+**generate ssl certificates**
 
    use **certs/generate.sh** to create the necessary ssl certificates for secure connections. ensure all certificates are properly generated and placed within the **certs/** directory.
 
@@ -30,22 +30,7 @@ this setup creates an irc network using **ngircd** within docker containers. it 
    ./generate.sh
    ```
 
-2. **build and run example containers**
-
-   use the provided **build.sh** script to build the docker images and run the following servers:
-
-   - **hub-irc**: the central irc server.
-   - **spoke-irc**: a linked irc server extending the network.
-
-   this setup provides an example hub-and-spoke topology for an irc network.
-
-## running the example topology
-
-- **hub-irc**:
-  - exposes ports **6669** (regular) and **7669** (ssl).
-
-- **spoke-irc**:
-  - exposes ports **6668** (regular) and **7668** (ssl).
+**build and run example containers**
 
 use **docker-compose up** to start the example with these configurations. 
 
@@ -61,7 +46,7 @@ this docker compose example creates a hub-and-spoke irc network topology with tw
 - **hub-irc**: the central server that other servers (spokes) connect to.
 - **spoke-irc**: a server that connects to the hub, extending the network.
 
-### configuration details
+## configuration details
 
 - **hub-irc** and **spoke-irc** are defined as separate services in **docker-compose.yml**.
 - each service is built from the current directory (`build: .`) using the **dockerfile** to create the ngircd container.
@@ -69,7 +54,7 @@ this docker compose example creates a hub-and-spoke irc network topology with tw
 - the **hub-irc** service listens on ports **6669** (regular) and **7669** (ssl).
 - the **spoke-irc** service listens on ports **6668** (regular) and **7668** (ssl).
 
-### environment variables and linking
+## environment variables and linking
 
 the environment variables defined for each service are used to configure ngircd, such as the server name, network, motd, and ssl settings.
 
@@ -106,7 +91,7 @@ defined in **compose.yml**:
 
 these environment variables are used to create the **ngircd.conf** file via **envsubst**.
 
-### example configuration for ngircd
+## example configuration for ngircd
 
 below is an example configuration for **spoke-irc**, demonstrating how to set up the irc server using the ngircd configuration file:
 
