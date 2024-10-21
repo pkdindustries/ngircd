@@ -7,7 +7,6 @@ this setup creates an irc network using **ngircd** within docker containers. it 
 ## project structure
 
 - **ngircd.sh**: docker entrypoint for configuring and starting **ngircd**.
-- **ngircd.conf.tmpl**: configuration template for **ngircd**.
 - **Dockerfile**: defines the docker image for **ngircd**.
 - **certs/**: directory containing ssl certificate.
 - **certs/generate.sh**: script to generate ssl certificate.
