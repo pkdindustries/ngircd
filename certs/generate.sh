@@ -1,15 +1,8 @@
 #!/bin/bash
-
 # generate_certs.sh
-# This script generates SSL certificates and separate PEM files for ngIRCd servers.
-
-# Set default variables
 KEY_SIZE=2048
-DAYS_VALID=3650  # Certificates valid for 10 years
+DAYS_VALID=3650 # 10 years
 
-# Create the certs directory if it doesn't exist
-
-# Function to generate a certificate and key
 generate_cert() {
     local CERT_NAME="$1"
     local KEY_FILE="${CERT_NAME}-key.pem"
@@ -26,7 +19,6 @@ generate_cert() {
     read -s PASSWORD_CONFIRM
     echo
 
-    # Check if passwords match
     if [ "$PASSWORD" != "$PASSWORD_CONFIRM" ]; then
         echo "Passwords do not match. Exiting."
         exit 1
@@ -40,19 +32,13 @@ generate_cert() {
 
     # Generate self-signed certificate
     openssl x509 -req -in "$CSR_FILE" -passin pass:"$PASSWORD" -signkey "$KEY_FILE" -out "$CERT_FILE" -days $DAYS_VALID
-
-    if [ ! -f dhparams.pem ]; then
-        openssl dhparam -2 -out dhparams.pem 4096
-    fi
     
     # Clean up
     rm "$CSR_FILE"
 
-    # Clear the password variable
     unset PASSWORD
     unset PASSWORD_CONFIRM
 }
 
-# Main script execution
 generate_cert irc
 

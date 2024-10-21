@@ -87,7 +87,7 @@ defined in **compose.yml**:
   
     
 
-these environment variables are used to create the **ngircd.conf** file via **envsubst**.
+these environment variables are used to create the **ngircd.conf** file.
 
 ## example configuration for ngircd
 
