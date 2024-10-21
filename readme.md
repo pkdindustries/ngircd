@@ -84,34 +84,25 @@ this configuration allows **hub-irc** to act as the main node, while **spoke-irc
 defined in **compose.yml**:
 
 - general configuration:
-  - specifies the name of the irc server. 
-    - `IRCD_NAME=hub-irc`
-  - sets the name of the irc network.
-    - `IRCD_NETWORK=my_irc_network`
-  - defines the message of the day that users see when they connect.
-    - `IRCD_MOTD=Welcome to My IRC Network!`
+  - `IRCD_NAME` 
+  - `IRCD_NETWORK`
+  - `IRCD_MOTD`
+    
 - ports and ssl:
-  - defines the ports for regular irc connections.
-    - `IRCD_PORTS=6668`
-  - defines the ports for ssl-secured irc connections.
-    - `IRCD_SSL_PORTS=7668`
-  - specifies the file path to the ssl certificate.
-    - `IRCD_SSL_CERT_FILE=/certs/server-cert.pem`
-  - specifies the file path to the ssl key.
-    - `IRCD_SSL_KEY_FILE=/certs/server-key.pem`
-  - provides the password for the ssl key file, if encrypted.
-    - `IRCD_SSL_KEYFILE_PASSWORD=mypassword`
+    - `IRCD_PORTS` 
+    - `IRCD_SSL_PORTS` 
+    - `IRCD_SSL_CERT_FILE` 
+    - `IRCD_SSL_KEY_FILE`
+    - `IRCD_SSL_KEYFILE_PASSWORD`
+    
 - linking servers:
-  - the name of the server to link to.
-    - `IRCD_LINK_NAME=spoke-irc`
-  - the hostname or ip address of the linked server.
-    - `IRCD_LINK_HOST=spoke-irc.local`
-  - the port to connect to on the linked server.
-    - `IRCD_LINK_PORT=7668`
-  - the password used to authenticate the link connection.
-    - `IRCD_LINK_PASSWORD=linkpassword`
-  - the password expected from the linked peer server.
-    - `IRCD_LINK_PEER_PASSWORD=peerpassword`
+    - `IRCD_LINK_NAME` 
+    - `IRCD_LINK_HOST` 
+    - `IRCD_LINK_PORT`
+    - `IRCD_LINK_PASSWORD` 
+    - `IRCD_LINK_PEER_PASSWORD` 
+  
+    
 
 these environment variables are used to create the **ngircd.conf** file via **envsubst**.
 
