@@ -14,8 +14,6 @@ services:
       - IRCD_LINK_SSL_VERIFY=no
       - IRCD_SSL_KEYFILE_PASSWORD=${IRCD_SSL_KEYFILE_PASSWORD}
       - IRCD_LINK_NAME=spoke.pkd.org
-      - IRCD_LINK_PASSWORD=secret2
-      - IRCD_LINK_PEER_PASSWORD=secret1
       - IRCD_LINK_NAME=hub.pkd.org
       - IRCD_LINK_HOST=hub-irc
       - IRCD_LINK_PORT=7669
