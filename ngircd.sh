@@ -37,6 +37,11 @@ ${IRCD_LINK_HOST:+Host = ${IRCD_LINK_HOST}}
 ${IRCD_LINK_PORT:+Port = ${IRCD_LINK_PORT}}
 ${IRCD_LINK_PASSWORD:+MyPassword = ${IRCD_LINK_PASSWORD}}
 ${IRCD_LINK_PEER_PASSWORD:+PeerPassword = ${IRCD_LINK_PEER_PASSWORD}}
+
+[Limits]
+MaxConnections = 0
+MaxConnectionsIP = 0
+MaxPenaltyTime = -1
 EOF
 
 # Test config
